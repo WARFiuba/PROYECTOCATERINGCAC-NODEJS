@@ -1,0 +1,225 @@
+#header{
+    background-image: linear-gradient(
+      rgba(0,0,0,0.7),
+      rgba(0,0,0,0.7)),
+      url(../img/panaderia.jpg);
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
+      min-height: 10vh;
+      display: flex;
+      align-items: center;
+}
+
+.historia p {
+    margin: 10px;
+}
+
+.trabajos p {
+    margin: 10px;
+}
+
+
+.contenedor {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedor-historia .historia h2 {
+    text-align: center;
+}
+
+
+.contenedor-trabajos .trabajos h2 {
+    text-align: center;
+}
+
+.contenedor-historia {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+
+.contenedor-trabajos {
+    display: flex;
+    flex-direction: row-reverse;
+    box-sizing: border-box;
+}
+
+.contenedor-historia img {
+    width: 50%;
+    height: auto;
+}
+
+.contenedor-trabajos img {
+    width: 50%;
+    height: auto;
+}
+
+
+.marcas {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.slider {
+    width: 50vw;
+    height: auto;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slider .slide-track {
+    display: flex;
+    align-items: center;
+    animation: scroll 40s linear infinite;
+    -webkit-animation: scroll 40s linear infinite;
+    width: calc(200px * 10);
+}
+
+.slider .slide {
+    width: 200px;
+}
+
+.slider .slide img {
+    width: 100%;
+}
+
+@keyframes scroll{
+    0%{
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    100%{
+        -webkit-transform: translateX(calc(-200px * 5));
+        transform: translateX(calc(-200px * 5));
+    }
+}
+
+@media(max-width: 768px) {
+    #header {
+        min-height: 10vh;
+    }
+
+    .marcas{
+        margin: auto
+    }
+    
+    .marcas h2 {
+        text-align: center;
+    }
+
+    .contenedor-historia {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .historia {
+        flex: 1;
+    }
+
+    .contenedor-trabajos {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .trabajos {
+        flex: 1;
+    }
+
+    .contenedor-historia img {
+        width: 100%;
+    }
+
+    .contenedor-trabajos img {
+        width: 100%;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 1080px) {
+    .contenedor-historia .historia {
+        width: 50%;
+    }
+    
+    .contenedor-historia img {
+        width: 50%;
+        height: 100%;
+    }
+    
+    .contenedor-trabajos .tabajos {
+        width: 50%;
+    }
+    
+    .contenedor-trabajos img {
+        width: 50%;
+        height: 100%;
+    }
+
+    #header {
+        min-height: 10vh;
+    }
+
+    .marcas{
+        margin: auto
+    }
+    
+    .marcas h2 {
+        text-align: center;
+    }
+
+    .historia p {
+        font-size: 15px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .trabajos p {
+        text-align: center;
+        font-size: 15px;
+        margin: auto;
+    }
+
+    .contenedor-trabajos {
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .trabajos {
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .contenedor-trabajos img {
+        flex: 1;
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .contenedor-historia {
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .historia {
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .contenedor-historia img {
+        flex: 1;
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+}

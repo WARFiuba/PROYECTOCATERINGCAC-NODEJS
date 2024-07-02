@@ -1,0 +1,37 @@
+form {
+  width: 50%;
+  margin: 0 auto;
+  max-width: 700px;
+  min-width: 360px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+form > * {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+label {
+  margin-bottom: 4px;
+}
+
+input,
+textarea,
+select {
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid silver;
+  margin-bottom: 24px;
+}
+
+textarea{
+    resize: none;
+    height: 200px;
+}
+
+.error-message{
+  color: red;
+}
