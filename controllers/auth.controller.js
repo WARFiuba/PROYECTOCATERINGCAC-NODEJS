@@ -6,7 +6,7 @@ import pool from '../backend/config/db.js'
 
 const getDatosUsuario = async (req, res) => {
     const id = req.params.id;
-    const query = `SELECT usuarios.username, usuarios.email FROM usuarios WHERE usuarios.id = ?`;
+    const query = `SELECT * FROM usuarios WHERE usuarios.id = ?`;
 
     try {
 
@@ -29,16 +29,24 @@ const registro = async (req, res) => {
 
         const connection = await pool.getConnection();
         const [userRow] = await connection.query(userQuery, [usuario.username]);
-        console.log(userRow);
         if (userRow.length > 0) {
             res.status(409).send('nombre de usuario ya en uso')
         } else {
 
             const query = `INSERT INTO usuarios SET ?`;
 
+            const passhash = await bcrypt.hash(usuario.password, 8);
+
+            const usuarioSeguro = {
+                'username': usuario.username,
+                'email': usuario.email,
+                'password': passhash
+            }
+            
+
             try {
         
-                const [rows] = await connection.query(query, [usuario]);
+                const [rows] = await connection.query(query, [usuarioSeguro]);
                 connection.release();
                 res.status(201).send(`usuario creado con id: ${rows.insertId}`);
                 
@@ -56,21 +64,22 @@ const registro = async (req, res) => {
 
 const cambiarContrasenia = async (req, res) => {
     const id = req.params.id;
-    const producto = req.body;
+    const usuario = req.body;
     const queryCheck = `SELECT password FROM usuarios WHERE id = ?`;
     const query = `UPDATE usuarios SET ? WHERE id = ?`;
 
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.query(queryCheck, [id]);
+        const [row] = await connection.query(queryCheck, [id]);
         connection.release();
 
-        if (producto.currentPassword == rows[0].password) {
+        if ((await bcrypt.compare(usuario.currentPassword, row[0].password))) {
 
             try {
-                const password ={"password": producto.newPassword};
+                const passhash = await bcrypt.hash(usuario.newPassword, 8);
+                const password ={"password": passhash};
                 const connection = await pool.getConnection();
-                const [rows] = await connection.query(query, [password, id]);
+                const [row] = await connection.query(query, [password, id]);
                 connection.release();
                 res.send(`usuario actualizado con id: ${id}`);
                 
@@ -92,18 +101,31 @@ const cambiarContrasenia = async (req, res) => {
 const login = async (req, res) => {
     const body = req.body;
 
-    const userQuery = `SELECT username FROM usuarios WHERE username = ?`;
-    const passQuery = `SELECT password FROM usuarios WHERE password = ?`;
+    const query = `SELECT * FROM usuarios WHERE username = ?`;
 
     try {
 
         const connection = await pool.getConnection();
-        const [rowUser] = await connection.query(userQuery, [body.username]);
-        const [rowPass] = await connection.query(passQuery, [body.password]);
+        const [row] = await connection.query(query, [body.username])
         connection.release();
-        
+
+        if (row[0].length == 0 || !(await bcrypt.compare(body.password, row[0].password))) {
+            res.status(401).send('usuaio o contraseña incorrectos');
+        } else {
+
+            const id = row[0].id;
+            const token = jwt.sign({id:id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE_TIME})
+
+            const cookieConfig = {
+                expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+                httpOnly: true
+            }
+
+            res.cookie('jwt', token, cookieConfig)
+        }
+
     } catch (error) {
-        res.status(500).send('internal server error')
+        res.status(500).send(error)
     }
 }
 
