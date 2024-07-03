@@ -1,30 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - Confiteria Codo a Codo</title>
-    <link rel="stylesheet" href="css/style.css">
+    <%- include('../partials/head'); %>
 </head>
 <body>
     <header class="header">
-        <div class="menu container">
-            <a href="#" class="logo"></a>
-            <input type="checkbox" id="menu" />
-            <label for="menu">
-                <img src="img/menu.png" class="menu-icono" alt="">
-            </label>
-            <nav class="navbar">
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="productos.html">Productos</a></li>
-                    <li><a href="nosotros.html">Quienes somos</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
 
-
-                </ul>
-            </nav>
-        </div>
+        <%- include('../partials/header'); %>
 
         <div class="header-content container">
 
@@ -166,23 +148,7 @@
     </section>
 
     <footer class="footer">
-        <div class="footer-content container">
-            <div  class="contenedor-de-redes">
-                <div class="redes">
-                    <h3>Redes</h3>
-                    <div id="contenedor-redes">
-                        <a class="enlace" href="#"><img src="./img/logo-facebook.webp" alt="Facebook"></a>
-                        <a class="enlace" href="#"><img src="./img/logo-instagram.webp" alt="Instagram"></a>
-                        <a class="enlace" href="#"><img src="./img/logo-twitter.webp" alt="X"></a>
-                    </div>
-                </div>
-                <a href="contacto.html"><h3>Dejanos tu opinion</h3></a>
-            </div>
-            <div class="creditos">
-                <h3>Confiteria Codo a Codo todos los derechos reservados 2024 ©</h3>
-                <p>Creado por Agustin, William, Ariel y Melisa.</p>
-            </div>
-        </div>
+        <%- include('../partials/footer'); %>
     </footer>
 </body>
 </html>

@@ -1,7 +1,7 @@
 import pool from '../backend/config/db.js'
 
 /* CRUD Productos */
-app.get('/productos', async (req, res) => {
+const obtenerProductos = async (req, res) => {
     const query = `SELECT * FROM productos`
     try {
         const connection = await pool.getConnection();
@@ -11,10 +11,10 @@ app.get('/productos', async (req, res) => {
     } catch (error) {
         res.status(500).send('internal server error');
     }
-})
+}
 
-app.get('/producto/:categoria', async (req, res) => {
-    const categoria = req.params.categoria;
+const obtenerProducto = async (req, res) => {
+    const {categoria} = req.params;
     const query = `SELECT productos.nombre, productos.stock, productos.precio FROM productos WHERE productos.categoria = ?`;
 
     try {
@@ -27,9 +27,9 @@ app.get('/producto/:categoria', async (req, res) => {
     } catch (error) {
         res.status(500).send('internal server error');
     }
-})
+}
 
-app.post('/productos', async (req, res) => {
+const agregarProducto = async (req, res) => {
 
     const producto = req.body;
 
@@ -45,9 +45,9 @@ app.post('/productos', async (req, res) => {
     } catch (error) {
         res.status(500).send('internal server error');
     }
-})
+}
 
-app.put('/productos/:id', async (req, res) => {
+const actualizarProducto = async (req, res) => {
     const id = req.params.id;
     const producto = req.body;
 
@@ -63,9 +63,9 @@ app.put('/productos/:id', async (req, res) => {
     } catch (error) {
         res.status(500).send('internal server error');
     }
-})
+}
 
-app.delete('/productos/:id', async (req, res) => {
+const eliminarProducto = async (req, res) => {
     const id = req.params.id;
 
     const query = `DELETE FROM productos WHERE id = ?`;
@@ -80,4 +80,12 @@ app.delete('/productos/:id', async (req, res) => {
     } catch (error) {
         res.status(500).send('internal server error');
     }
-})
+}
+
+export default {
+    obtenerProductos,
+    obtenerProducto,
+    agregarProducto,
+    actualizarProducto,
+    eliminarProducto
+};

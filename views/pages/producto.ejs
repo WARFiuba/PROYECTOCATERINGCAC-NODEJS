@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <%- include('../partials/head'); %>
+    <link rel="stylesheet" href="/css/productos.css" />
+  </head>
+  <body>
+    <header id="header">
+        <%- include('../partials/header'); %>
+    </header>
+    <main class="services" id="contenedor">
+        <section class="listado">
+
+        </section>
+    </main>
+    <footer class="footer">
+        <%- include('../partials/footer'); %>
+    </footer>
+    <script src="/js/listaProductos.js"></script>
+  </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const productos = <%- JSON.stringify(data) %>;
+
+        const listado = document.querySelector('.listado')
+        
+        productos.forEach(producto => {
+
+            const articulo = document.createElement('article')
+            var nombre = producto.nombre
+            var precio = producto.precio
+
+            articulo.innerHTML = `
+            <h2>${nombre}</h2
+            <p>precio: $${precio}</p>
+            `;
+            listado.appendChild(articulo);
+        });
+
+    });
+</script>
+</html>
