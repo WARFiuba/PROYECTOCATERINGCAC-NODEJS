@@ -17,7 +17,7 @@
         <%- include('../partials/footer'); %>
     </footer>
   </body>
-  <script src="./js/navbar.js"></script>
+  <script src="/js/navbar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
         const productos = <%- JSON.stringify(data) %>;
@@ -29,14 +29,17 @@
             const articulo = document.createElement('article')
             var nombre = producto.nombre
             var precio = producto.precio
+            var id = producto.id
 
             articulo.innerHTML = `
             <h2>${nombre}</h2
             <p>precio: $${precio}</p>
+            <button class="btn-agregar" data-id="${id}" data-precio="${precio}">agregar al carrito</button>
             `;
             listado.appendChild(articulo);
         });
 
     });
 </script>
+<script src="/js/pedido.js"></script>
 </html>

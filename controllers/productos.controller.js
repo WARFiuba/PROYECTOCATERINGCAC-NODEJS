@@ -15,7 +15,7 @@ const obtenerProductos = async (req, res) => {
 
 const obtenerProducto = async (req, res) => {
     const {categoria} = req.params;
-    const query = `SELECT productos.nombre, productos.stock, productos.precio FROM productos WHERE productos.categoria = ?`;
+    const query = `SELECT * FROM productos WHERE productos.categoria = ?`;
 
     try {
 

@@ -5,19 +5,33 @@ import pool from '../backend/config/db.js'
 /* CRUD usuarios */
 
 const getDatosUsuario = async (req, res) => {
-    const id = req.params.id;
-    const query = `SELECT * FROM usuarios WHERE usuarios.id = ?`;
+    const token = req.params.token;
 
-    try {
+    jwt.verify(token, process.env.JWT_SECRET, async (error, decoded) => {
+        if (error) {
 
-        const connection = await pool.getConnection();
-        const [rows] = await connection.query(query, [id]);
-        connection.release();
-        res.json(rows);
+            return res
+                .status(500)
+                .send({"message": "token invalido"})
+
+        } else {
+            const id = decoded.id;
+
+            const query = `SELECT * FROM usuarios WHERE usuarios.id = ?`;
+
+            try {
         
-    } catch (error) {
-        res.status(500).send('internal server error')
-    }
+                const connection = await pool.getConnection();
+                const [rows] = await connection.query(query, [id]);
+                connection.release();
+                res.json({"username": rows[0].username, "email": rows[0].email});
+                
+            } catch (error) {
+                res.status(500).send('internal server error')
+            }
+        }
+        
+    })
 }
 
 const registro = async (req, res) => {

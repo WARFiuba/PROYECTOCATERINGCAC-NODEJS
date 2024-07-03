@@ -78,6 +78,14 @@ app.get('/logout', async (req, res) => {
         `)
 })
 
+app.get('/perfil', async (req, res) => {
+    res.render('pages/perfil', {pageTitle: 'Perfil'});
+})
+
+app.get('/carrito', async (req, res) => {
+    res.render('pages/carrito', {pageTitle: 'Carrito'})
+})
+
 const PORT = 4000;
 
 app.listen(PORT, () => console.log(`Servidor de frontend iniciado en http://localhost:${PORT}`));
