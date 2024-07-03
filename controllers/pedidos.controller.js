@@ -96,15 +96,68 @@ const actualizarPedido = async (req, res) => {
         } else {
             const id = decoded.id;
 
-            const queryProductos = `INSERT INTO productos_pedidos SET ?`;
+            const queryProductoExistente = `SELECT * FROM productos_pedidos WHERE id_producto = ?`
 
             try {
 
-        
+                const connection = await pool.getConnection();
+
+                const [resExiste] = await connection.query(queryProductoExistente, [producto.id_producto])
 
                 connection.release();
-        
-                res.send("pedido generado")
+
+                if (resExiste.length > 0) {
+
+                    const nueva_cantidad = +resExiste[0].cantidad + +producto.cantidad;
+                    const nuevo_precio_parcial = +resExiste[0].precio_parcial + +producto.precio_parcial
+
+                    const productoActualizado = {
+
+                        "cantidad": nueva_cantidad,
+                        "precio_parcial": nuevo_precio_parcial
+
+                    }
+
+                    const queryActualizarProducto = `UPDATE productos_pedidos SET cantidad = ?, precio_parcial = ? WHERE id_producto = ?`
+
+                    try {
+                        const connection = await pool.getConnection();
+
+                        const [resActu] = await connection.query(queryActualizarProducto, [productoActualizado.cantidad, productoActualizado.precio_parcial, producto.id_producto])
+
+                        connection.release();
+
+                        res.status(200).send({"message": "pedido actualizado"});
+
+                    } catch (error) {
+
+                        res.status(500).send(error)
+
+                    } 
+
+                } else {
+
+                    const queryNuevoProductoPedido = `INSERT INTO productos_pedidos SET ?`
+
+                    try {
+
+                        const connection = await pool.getConnection();
+
+                        const [resNuevoProducto] = await connection.query(queryNuevoProductoPedido, [producto])
+
+                        connection.release();
+
+                        res.status(200).send({"message": "pedido actualizado"});
+
+
+                        
+                    } catch (error) {
+
+                        res.status(500).send(error)
+                        
+                    }
+
+                }
                 
             } catch (error) {
                 res.status(500).send(error)
@@ -138,7 +191,7 @@ const tienePedido = async (req, res) => {
                 
                 if (rows.length > 0) {
 
-                    res.json({"message": "tiene pedido", "id_detalle": rows[0].id_detalle});
+                    res.json({"id_detalle": rows[0].id_detalle});
 
                 } else {
 

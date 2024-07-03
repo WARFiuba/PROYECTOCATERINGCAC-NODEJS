@@ -20,4 +20,6 @@ router.get('/tienePedido/:token', pedidos.tienePedido);
 
 router.post('/pedidos/nuevo/:token', pedidos.nuevoPedido);
 
+router.put('/pedidos/actualizar/:token', pedidos.actualizarPedido);
+
 export default router

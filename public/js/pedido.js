@@ -34,6 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 
             } else {
 
+                const detalle = await response.json();
+                const id_detalle = detalle.id_detalle
+
+                await fetch(`http://localhost:3000/pedidos/actualizar/${token}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id_producto, cantidad, precio_parcial, id_detalle}),
+                })
+
             }
 
         })
