@@ -48,7 +48,7 @@ const registro = async (req, res) => {
         
                 const [rows] = await connection.query(query, [usuarioSeguro]);
                 connection.release();
-                res.status(201).send(`usuario creado con id: ${rows.insertId}`);
+                res.status(201).send({"message": `usuario creado con id: ${rows.insertId}`});
                 
             } catch (error) {
                 res.status(500).send(error);
@@ -110,18 +110,13 @@ const login = async (req, res) => {
         connection.release();
 
         if (row[0].length == 0 || !(await bcrypt.compare(body.password, row[0].password))) {
-            res.status(401).send('usuaio o contraseña incorrectos');
+            res.status(401).send({"message": 'usuaio o contraseña incorrectos'});
         } else {
 
             const id = row[0].id;
             const token = jwt.sign({id:id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE_TIME})
 
-            const cookieConfig = {
-                expires: new Date(Date.now()+process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
-                httpOnly: true
-            }
-
-            res.cookie('jwt', token, cookieConfig).send({ token })
+            res.send({ token })
         }
 
     } catch (error) {

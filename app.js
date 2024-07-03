@@ -69,6 +69,15 @@ app.get('/registro', async (req, res) => {
     res.render('pages/auth/register', {pageTitle: 'Registrarse', error: null})
 })
 
+app.get('/logout', async (req, res) => {
+    res.send(`
+        <script>
+            localStorage.clear();
+            window.location.href = '/';
+        </script>
+        `)
+})
+
 const PORT = 4000;
 
 app.listen(PORT, () => console.log(`Servidor de frontend iniciado en http://localhost:${PORT}`));
