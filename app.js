@@ -3,6 +3,7 @@ import path from 'path';
 import ejs from 'ejs';
 import fetch from 'node-fetch';
 import { fileURLToPath } from 'url';
+import { error } from 'console';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,6 +60,14 @@ app.get('/producto/:categoria', async (req, res) => {
         res.status(500).send('Error interno del servidor');
     }
 });
+
+app.get('/login', async (req, res) => {
+    res.render('pages/auth/login', {pageTitle: 'Iniciar sesion', error: null})
+})
+
+app.get('/registro', async (req, res) => {
+    res.render('pages/auth/register', {pageTitle: 'Registrarse', error: null})
+})
 
 const PORT = 4000;
 

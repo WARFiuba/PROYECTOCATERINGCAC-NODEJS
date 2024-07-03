@@ -121,11 +121,11 @@ const login = async (req, res) => {
                 httpOnly: true
             }
 
-            res.cookie('jwt', token, cookieConfig)
+            res.cookie('jwt', token, cookieConfig).send({ token })
         }
 
     } catch (error) {
-        res.status(500).send(error)
+        throw error;
     }
 }
 
