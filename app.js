@@ -19,18 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/', async (req, res) => {
-    /*try {
-        // Ejemplo de obtener datos del backend
-        const response = await fetch('http://localhost:3000/api/data');
-        const data = await response.json();
-
-        // Renderizar la vista 'home' con los datos obtenidos
-        
-    } catch (error) {
-        console.error('Error al obtener datos del backend:', error);
-        res.status(500).send('Error interno del servidor');
-    }*/
-
     res.render('pages/home', { pageTitle: 'Home'});
 });
 

@@ -2,19 +2,6 @@ import pool from '../backend/config/db.js'
 import jwt from 'jsonwebtoken'
 
 /* CRUD Pedidos */
-
-/* posiblemente necesario
-
-    const productos = req.body.productos;
-    let pedido = req.body.pedido;
-    let detalle = req.body.detalle;
-
-    pedido = { ...pedido,
-                "id_cliente": +id_cliente,
-                "id_detalle": null
-    }
-*/
-
 const nuevoPedido = async (req, res) => {
     
     const token = req.params.token;
@@ -206,8 +193,71 @@ const tienePedido = async (req, res) => {
     })
 }
 
+const obtenerPedido = async (req, res) => {
+
+    const token = req.params.token;
+
+    jwt.verify(token, process.env.JWT_SECRET, async (error, decoded) => {
+
+        if (error) {
+
+            return res
+                .status(500)
+                .send({"message": "token invalido"})
+
+        } else {
+
+            const id = decoded.id;
+
+            const queryObtenerDetalle = `SELECT id_detalle FROM pedidos WHERE id_cliente = ?`
+
+            try {
+
+                const connection = await pool.getConnection();
+                const [rows] = await connection.query(queryObtenerDetalle, [id]);
+                connection.release();
+
+                const queryObtenerPoductos = `SELECT * FROM productos_pedidos WHERE id_detalle = ?`
+
+                try {
+
+                    const connection = await pool.getConnection();
+                    const [productos_pedidos] = await connection.query(queryObtenerPoductos, [rows[0].id_detalle]);
+                    connection.release();
+
+                    const queryDatosFaltantesProductos = `SELECT categoria, nombre FROM productos WHERE id = ?`
+
+                    const productosCompletos = await Promise.all(productos_pedidos.map(async (producto) => {
+
+                        const connection = await pool.getConnection();
+                        const [datosFaltantes] = await connection.query(queryDatosFaltantesProductos, [producto.id_producto]);
+                        connection.release();
+                        return {
+                            ...producto,
+                            "categoria": datosFaltantes[0].categoria,
+                            "nombre": datosFaltantes[0].nombre
+                        };
+
+                    }));
+
+
+                    res.json(productosCompletos)
+                    
+                } catch (error) {
+                    res.status(500).send(error)
+                }
+                
+            } catch (error) {
+                res.status(500).send(error)
+            }
+
+        }
+    })
+}
+
 export default {
     tienePedido,
     nuevoPedido,
-    actualizarPedido
+    actualizarPedido,
+    obtenerPedido
 };

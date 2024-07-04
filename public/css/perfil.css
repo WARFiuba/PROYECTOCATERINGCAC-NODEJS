@@ -1,0 +1,24 @@
+.contenedorPerfil {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.contenedorPerfil img {
+    width: 35%;
+    height: 55%;
+    border-radius: 12px;
+}
+
+.datos {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 40%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}

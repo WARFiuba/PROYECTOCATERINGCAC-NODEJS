@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     productos.forEach(producto => {
         producto.addEventListener('click', () => {
-            //fetchData(producto.dataset.categoria)
             window.location.href= `/producto/${producto.dataset.categoria}`
         })
     })

@@ -22,4 +22,8 @@ router.post('/pedidos/nuevo/:token', pedidos.nuevoPedido);
 
 router.put('/pedidos/actualizar/:token', pedidos.actualizarPedido);
 
+router.get('/pedido/:token', pedidos.obtenerPedido)
+
+router.get('/verificarToken/:token', usuario.verificarToken)
+
 export default router

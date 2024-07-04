@@ -138,9 +138,28 @@ const login = async (req, res) => {
     }
 }
 
+const verificarToken = async (req, res) => {
+    const token = req.params.token;
+
+    jwt.verify(token, process.env.JWT_SECRET, async (error, decoded) => {
+        if (error) {
+
+            return res
+                .status(500)
+                .send({"message": "token invalido"})
+
+        } else {
+            
+            res.status(200).send({"message": "token valido"})
+        }
+    })
+
+}
+
 export default {
     getDatosUsuario,
     registro,
     cambiarContrasenia,
-    login
+    login,
+    verificarToken
 };
